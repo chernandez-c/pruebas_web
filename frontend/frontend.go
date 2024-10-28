@@ -26,9 +26,9 @@ func main() {
 
     http.HandleFunc("/fetch-data", func(w http.ResponseWriter, r *http.Request) {
         // Call the backend API
-        resp, err := http.Get("http://gen_hernandez:8081/api/data")
+        resp, err := http.Get("http://localhost:8081/api/data")
         if err != nil {
-            log.Println("Error haciendo una petición a http://gen_hernandez:8081/api/data")
+            log.Println("Error haciendo una petición a http://localhost:8081/api/data")
             http.Error(w, "Failed to fetch data", http.StatusInternalServerError)
             return
         }

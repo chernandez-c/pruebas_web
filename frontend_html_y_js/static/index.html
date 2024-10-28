@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frontend with Vanilla JavaScript</title>
+</head>
+<body>
+    <h1>Frontend with Vanilla JavaScript</h1>
+    <button id="fetchButton">Fetch Data</button>
+    <div id="result"></div>
+
+    <h3> Botón para segundo endpoint </h3>
+    <button id="fetchButton-api-data">Fetch Data 2</button>
+    <div id="result-fetchButton-api-data"></div>
+    <script>
+        document.getElementById('fetchButton').addEventListener('click', () => {
+            fetch('http://localhost:8081/')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    document.getElementById('result').innerHTML = `
+                        <p>Message: ${data.Message}</p>
+                        <p>Count: ${data.Count}</p>
+                    `;
+                })
+                .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
+                    document.getElementById('result').textContent = 'Failed to fetch from http://localhost:8081/';
+                });
+        });
+        document.getElementById('fetchButton-api-data').addEventListener('click', () => {
+            fetch('http://localhost:8081/api/data')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Only show the raw response data
+                    document.getElementById('result-fetchButton-api-data').innerText = JSON.stringify(data);
+                })
+                .catch(error => {
+                    console.error('There was a problem with the fetch operation:', error);
+                    document.getElementById('result-fetchButton-api-data').textContent = 'Failed to fetch from http://localhost:8081/api/data';
+                });
+        });
+    </script>
+</body>
+</html>

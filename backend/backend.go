@@ -18,15 +18,30 @@ type Response struct {
 // LoggingMiddleware logs details of incoming HTTP requests
 func LoggingMiddleware(next http.Handler) http.Handler {
     return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+        
+        // Set CORS headers to allow requests from http://localhost:8080
+        w.Header().Set("Access-Control-Allow-Origin", "http://localhost:8080")
+        w.Header().Set("Access-Control-Allow-Methods", "GET, POST")
+        w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+
+        // Handle preflight OPTIONS request for CORS
+        if r.Method == "OPTIONS" {
+            w.WriteHeader(http.StatusOK)
+            return
+        }
+
         // Log request method and URL
         log.Printf("Received %s request for %s", r.Method, r.URL)
 
+
         // Log request headers
+        /*
         for name, values := range r.Header {
             for _, value := range values {
                 log.Printf("Header: %s=%s", name, value)
             }
         }
+        */
 
         // Log request body if it exists
         if r.Body != nil {
