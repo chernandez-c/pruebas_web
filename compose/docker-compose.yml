@@ -1,0 +1,44 @@
+networks:
+  gen_hernandez:
+    name: gen_hernandez
+    #external: true
+
+services:
+  proxy:
+    container_name: nginx-proxy
+    build:
+      context: .
+      dockerfile: proxy/Dockerfile
+    ports:
+      - 0.0.0.0:8080:80
+    depends_on:
+      - backend
+      - frontend
+    networks:
+      - gen_hernandez
+
+  backend:
+    container_name: backend
+    build:
+      context: ../backend/
+    ports: 
+      - 0.0.0.0:8081:8081
+    tty: true 
+    command: "go run ."
+    volumes:
+    - ../backend:/app:z
+    networks:
+      - gen_hernandez
+
+  frontend:
+    container_name: frontend
+    build:
+      context: ../frontend/
+    ports: 
+      - 0.0.0.0:9000:8080
+    tty: true 
+    command: "go run ."
+    volumes:
+    - ../frontend/:/app/:z
+    networks:
+      - gen_hernandez
