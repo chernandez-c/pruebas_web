@@ -23,3 +23,12 @@ go.work.sum
 
 # env file
 .env
+
+.build.log
+.version
+mis_notas.md
+
+docker-compose.override.yml
+node_modules
+.eslintrc.json
+
